@@ -1,7 +1,7 @@
 import os
 import requests
 
-# Make directory to store generated files in 
+# Make directory to store generated files in
 try:
     os.makedirs("/tmp/smokeping")
 except FileExistsError:
@@ -46,9 +46,14 @@ title = {country_code}
             # Add the node to the group and config file contents
             country_contents += f"""
 +++ {hostname}
-menu = {participant_name} (AS{node['asn']}) - {hostname}
+menu = IPv4: {participant_name} (AS{node['asn']}) - {hostname}
 title = {participant_name} (AS{node['asn']}) - {hostname} - {node['ipv4']}
 host = {node['ipv4']}
++++ {hostname}v6
+menu = IPv6: {participant_name} (AS{node['asn']}) - {hostname}
+probe = FPing6
+title = {participant_name} (AS{node['asn']}) - {hostname} - {node['ipv6']}
+host = {node['ipv6']}
 """
     # Write the group and config file contents to files
     with open(f'/tmp/smokeping/{country_code}.conf', 'w') as f:
